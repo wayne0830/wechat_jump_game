@@ -37,6 +37,14 @@ VERSION = "1.1.1"
 # DEBUG 开关，需要调试的时候请改为 True，不需要调试的时候为 False
 DEBUG_SWITCH = False
 
+if len(sys.argv) == 0:
+    print("需要指定设备ID")
+    sys.exit(1)
+device_id = sys.argv[1]
+print("device_id:",device_id)
+config.device_id = device_id
+debug.device_id = device_id
+screenshot.device_id = device_id
 
 # Magic Number，不设置可能无法正常执行，请根据具体截图从上到下按需
 # 设置，设置保存在 config 文件夹中
@@ -70,7 +78,8 @@ def jump(distance):
     press_time = distance * press_coefficient
     press_time = max(press_time, 200)   # 设置 200ms 是最小的按压时间
     press_time = int(press_time)
-    cmd = 'adb shell input swipe {x1} {y1} {x2} {y2} {duration}'.format(
+    cmd = 'adb -s {did} shell input swipe {x1} {y1} {x2} {y2} {duration}'.format(
+        did=device_id,
         x1=swipe_x1,
         y1=swipe_y1,
         x2=swipe_x2,

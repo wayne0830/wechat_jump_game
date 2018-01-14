@@ -8,7 +8,7 @@ import shutil
 from PIL import ImageDraw
 
 screenshot_backup_dir = 'screenshot_backups/'
-
+device_id = 'none_device'
 
 def make_debug_dir(screenshot_backup_dir):
     """
@@ -47,10 +47,10 @@ def dump_device_info():
     """
     显示设备信息
     """
-    size_str = os.popen('adb shell wm size').read()
-    device_str = os.popen('adb shell getprop ro.product.device').read()
-    phone_os_str = os.popen('adb shell getprop ro.build.version.release').read()
-    density_str = os.popen('adb shell wm density').read()
+    size_str = os.popen('adb -s %s shell wm size' % (device_id)).read()
+    device_str = os.popen('adb -s %s shell getprop ro.product.device' % (device_id)).read()
+    phone_os_str = os.popen('adb -s %s shell getprop ro.build.version.release' % (device_id)).read()
+    density_str = os.popen('adb -s %s shell wm density' % (device_id)).read()
     print("""**********
 Screen: {size}
 Density: {dpi}

@@ -8,6 +8,7 @@ import matplotlib.animation as animation
 import cv2
 
 scale = 0.25
+device_id = 'none device'
 
 template = cv2.imread('character.png')
 template = cv2.resize(template, (0, 0), fx=scale, fy=scale)
@@ -30,14 +31,14 @@ def search(img):
 def pull_screenshot():
     filename = datetime.datetime.now().strftime("%H%M%S") + '.png'
     os.system('mv autojump.png {}'.format(filename))
-    os.system('adb shell screencap -p /sdcard/autojump.png')
-    os.system('adb pull /sdcard/autojump.png .')
+    os.system('adb -s %s shell screencap -p /sdcard/autojump.png' % (device_id))
+    os.system('adb -s %s pull /sdcard/autojump.png .' % (device_id))
 
 
 def jump(distance):
     press_time = distance * 1.35
     press_time = int(press_time)
-    cmd = 'adb shell input swipe 320 410 320 410 ' + str(press_time)
+    cmd = 'adb -s %s shell input swipe 320 410 320 410 %s' % (device_id, str(press_time))
     print(cmd)
     os.system(cmd)
 
